@@ -1,0 +1,262 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Example for response examples value",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/v1": {},
+        "/positions": {
+            "get": {
+                "tags": [
+                    "Positions"
+                ],
+                "summary": "Get users positions",
+                "description": "Returns a list of all available users positions.",
+                "operationId": "f8bb0ea6af5c8fc0ea38f9d5c27b3ee4",
+                "responses": {
+                    "200": {
+                        "description": "A JSON object of positions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "positions": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Lawyer"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "A JSON object containing errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Positions not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "A JSON object containing errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Positions not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/token": {
+            "get": {
+                "tags": [
+                    "Token"
+                ],
+                "summary": "Get a new token",
+                "description": "Method returns a token that is required to register a new user. \n *                  The token is valid for 40 minutes and can be used for only one request. \n *                  For the next registration, you will need to get a new one.",
+                "operationId": "4a9ec1dac84fd18f231c7324a3c3da69",
+                "responses": {
+                    "200": {
+                        "description": "A JSON object that contains token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJpdiI6Im9mV1NTMFZQT...YWNmYjAwZTI0YjY0NTkyNWIqfQ=="
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Register new user",
+                "description": "User registration request",
+                "operationId": "registerUser",
+                "parameters": [
+                    {
+                        "name": "Token",
+                        "in": "header",
+                        "description": "Token for registration",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eyJpd...aWLuQ3lVXs1A"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "phone",
+                                    "position_id",
+                                    "photo"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Username should contain 2-60 characters.",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "User email, must be a valid email according to RFC2822.",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "description": "User phone number. Number should start with code of Ukraine +380.",
+                                        "type": "string"
+                                    },
+                                    "position_id": {
+                                        "description": "User's position ID.",
+                                        "type": "integer"
+                                    },
+                                    "photo": {
+                                        "description": "Minimum size of photo 70x70px. The photo format must be jpeg/jpg type. The photo size must not be greater than 5 Mb.",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful registration",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 42
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "New user successfully registered"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Expired token response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The token expired."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get all users",
+                "operationId": "6250f0f351a8aa2976afa704661822ef",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Positions",
+            "description": "Positions"
+        },
+        {
+            "name": "Token",
+            "description": "Token"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        }
+    ]
+}

@@ -12,6 +12,51 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 
+/**
+ * @OA\Post(
+ *     path="/users",
+ *     summary="Register new user",
+ *     description="User registration request",
+ *     operationId="registerUser",
+ *     tags={"Users"},
+ *     @OA\Parameter(
+ *         name="Token",
+ *         in="header",
+ *         required=true,
+ *         description="Token for registration",
+ *         @OA\Schema(type="string"),
+ *         example="eyJpd...aWLuQ3lVXs1A"
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"name", "email", "phone", "position_id", "photo"},
+ *             @OA\Property(property="name", type="string", description="Username should contain 2-60 characters."),
+ *             @OA\Property(property="email", type="string", description="User email, must be a valid email according to RFC2822."),
+ *             @OA\Property(property="phone", type="string", description="User phone number. Number should start with code of Ukraine +380."),
+ *             @OA\Property(property="position_id", type="integer", description="User's position ID."),
+ *             @OA\Property(property="photo", type="string", format="binary", description="Minimum size of photo 70x70px. The photo format must be jpeg/jpg type. The photo size must not be greater than 5 Mb.")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Successful registration",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=true),
+ *             @OA\Property(property="user_id", type="integer", example=42),
+ *             @OA\Property(property="message", type="string", example="New user successfully registered")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=401,
+ *         description="Expired token response",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="success", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="The token expired.")
+ *         )
+ *     )
+ * )
+ */
 class CreateController extends Controller
 {
     /**

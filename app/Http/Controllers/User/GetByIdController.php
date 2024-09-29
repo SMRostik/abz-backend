@@ -8,6 +8,17 @@ use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Get(
+ *     path="/users/{id}",
+ *     summary="Get all users",
+ *     tags={"Users"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Successful operation"
+ *     )
+ * )
+ */
 class GetByIdController extends Controller
 {
     /**
