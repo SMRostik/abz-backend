@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\GetAllWithPaginationRequest;
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
@@ -40,7 +41,7 @@ class GetAllWithPaginationController extends Controller
                 'next_url' => $nextUrl,
                 'prev_url' => $prevUrl,
             ],
-            'users' => $users->items()
+            'users' => UserResource::collection($users->items())
         ];
 
         return response()->json($response);

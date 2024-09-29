@@ -4,6 +4,7 @@ namespace App\Http\Resources\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class UserResource extends JsonResource
 {
@@ -21,7 +22,16 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'position' => $this->position->name,
             'position_id' => $this->position_id,
-            'photo' => $this->photo,
+            'photo' => $this->getPhotoUrl(),
         ];
+    }
+
+    protected function getPhotoUrl()
+    {
+        if (strpos($this->photo, 'http') === 0) {
+            return $this->photo;
+        }
+
+        return config('app.url') . Storage::url($this->photo);
     }
 }
